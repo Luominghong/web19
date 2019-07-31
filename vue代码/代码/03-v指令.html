@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!--
+        v指令:
+            v-if    条件判断
+            v-show  渲染判断
+            v-for   循环
+            v-once  单次绑定
+            v-html  标签绑定
+            v-model 表单绑定
+            v-bind  属性绑定(缩写形式是 :属性)
+            v-on    事件绑定(缩写方式是 @事件名)
+
+
+        v-if和v-show的区别:
+            v-if是通过条件判断是否显示在dom树里面(文档流)
+            v-show一直存在于文档流, 只是通过css控制样式是否隐藏(display: none, display: inline-block切换)
+            渲染开销:
+                当需要频繁切换显示状态时, 使用v-show(缺点: 初始渲染开销大)
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <p v-if="seen">你能看到我吗?</p>
+       <p v-show="canShow">Can you see me?</p>
+       
+       <!-- 条件判断 -->
+       <p v-if="status == 200">请求成功</p>
+       <p v-else-if="status == 404">找不到页面</p>
+       <p v-else>请联系管理员</p>
+       <!-- 循环 -->
+       <ul>
+           <li v-for="aa in list">{{aa.name}}</li>
+       </ul>
+       <ul>
+           <!-- aa指的是数组的每一个元素, index指的是下标(名字可自定义, 位置对应即可) -->
+           <li v-for="(aa,index) in list">{{index}}-{{aa.name}}</li>
+       </ul>
+
+       <!-- 只能绑定一次数据, 无法改变 -->
+       <p v-once>{{onceData}}</p>
+
+       <!-- 表单双向绑定 -->
+       <input type="text" name="" id="" v-model="msg">
+       {{msg}}
+
+       <!-- 属性绑定v-bind -->
+       <img v-bind:src="imgUrl" v-bind:title="msg" width="100">
+       <!-- v-bind的简写方式 -->
+       <img :src="imgUrl" :title="msg" width="100">
+
+       <!-- 事件绑定 -->
+       <button v-on:click="canShow=!canShow">点击</button>
+       <button v-on:click="msg=msg.split('').reverse().join('')">反转</button>
+       <!-- v-on简写方式 -->
+       <button @click="canShow=!canShow">点击</button>
+       <button @click="msg=msg.split('').reverse().join('')">反转</button>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                seen: false,
+                canShow: false,
+                status: 200,
+                list: [
+                    {name: "小明"},
+                    {name: "小花"},
+                    {name: "小草"}
+                ],
+                onceData: "你好",
+                msg: "我是要改变的",
+                imgUrl: "https://cn.vuejs.org/images/logo.png"
+            }
+        })
+    </script>
+</body>
+</html>

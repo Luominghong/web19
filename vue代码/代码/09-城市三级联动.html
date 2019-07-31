@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <script src="./js/city.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <select name="province" id="province" v-model="province">
+            <option selected="selected" value="请选择">--请选择--</option>
+            <option v-for="province in allCities" :value="province.name">{{province.name}}</option>
+        </select>
+        <select name="city" id="city" v-model="city">
+            <option selected="selected" value="请选择">--请选择--</option>
+            <option v-for="city in cities" :value="city.name">{{city.name}}</option>
+        </select>
+        <select name="county" id="county" v-model="county">
+            <option selected="selected" value="请选择">--请选择--</option>
+            <option v-for="county in counties" :value="county">{{county}}</option>
+        </select>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                allCities: allCities,   //所有省
+                cities: [], //所有市
+                counties: [],    //所有区/县
+                province: "请选择",    //选中的省
+                city: "请选择",
+                county: "请选择"
+            },
+            watch: {
+                province(val){  
+                    this.cities = [];
+                    this.counties = [];
+                    this.city = "请选择";
+                    this.county = "请选择";
+                    // 遍历数据里面对应的省下级的市
+                    this.allCities.forEach(item=>{
+                        if(item.name == val){
+                            this.cities = item.city;
+                        }
+                    })
+                },
+                city(val){
+                    this.county = "请选择";
+                    this.counties = [];
+                    this.cities.forEach(item=>{
+                        if(item.name == val){
+                            this.counties = item.area;
+                        }
+                    })
+                }
+            },
+        })
+    </script>
+</body>
+</html>

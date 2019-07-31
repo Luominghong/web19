@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <!-- 1.引入vue-router.js -->
+    <script src="./js/vueRouter.js"></script>
+    <style>
+        #app .router-link-active{
+            color: #ff6700;
+        }
+        a:active{
+            color: #000;
+        }
+        a:link{
+            color: #000
+        }
+        a:visited{
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+    <!--
+        路由传参:
+        方式1:
+            传递参数
+            :to="`/movies/${item.num}`"
+            
+            在跳转到组件里面接收:
+            通过$route.params.参数的key
+            
+            缺点: 会将参数显示在url上(安全性低)
+            
+        方式2:
+            在router-link通过{name: 'movies', params: {id: num}}传参
+                [params: 存储所有参数]
+            在跳转到组件里面接收:
+                通过$route.params.参数的key
+
+    -->
+    <div id="app">
+        <template v-for="item in list">
+            <router-link :to="{name: item.id, params: {id: item.num}}">Go to {{item.name}}</router-link>
+        </template>
+
+        <router-view></router-view>
+    </div>
+
+    <script>
+        // 子组件1
+        var child1 = {
+            template: `
+                <div>
+                    User {{ $route.params.id }}
+                </div>
+            `
+        }
+        var child2 = {
+            template: `
+                <div>
+                    User {{ $route.params.id }}
+                </div>
+            `
+        }
+
+        // 2.定义路由表
+        const routes = [
+            { path: '/child1', name: 'child1', component: child1 },
+            { path: '/child2', name: 'child2', component: child2 },
+        ]
+
+        // 3. 创建 router 实例，然后传 `routes` 配置
+        const router = new VueRouter({
+            routes 
+        })
+
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                list: [
+                    {name: "小明", num: 12345, id: "child1"},
+                    {name: "小花", num: 56789, id: "child2"}
+                ]
+            },
+            router  //注册路由 相当于 router: router
+        })
+    </script>
+</body>
+</html>

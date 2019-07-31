@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       {{msg}} <!--mustache语法-->
+       <p v-html="tag"></p> <!--渲染标签-->
+       {{fonts}}
+       <p v-html="fonts"></p>
+        
+       <p>{{ num<5? num*2: num+2}}</p>  <!--三目运算-->
+       <p>{{num+2}}</p>     <!--数学运算-->
+       <p>{{info.split("").reverse().join("")}}</p> <!--js表达式-->
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                msg: "你好",
+                tag: "<span>Hello</span>",
+                fonts: "&lt;你好&gt;",
+                num: 4,
+                info: "我爱敲代码!"
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <child :level="level">
+            我是h{{level}}标签
+        </child>
+    </div>
+
+    <!-- <template id="child">
+        <div>
+            <h1 v-if="level==1">
+                <slot></slot>
+            </h1>
+            <h2 v-else-if="level==2">
+                <slot></slot>
+            </h2>
+            <h3 v-else-if="level==3">
+                <slot></slot>
+            </h3>
+            <h4 v-else-if="level==4">
+                <slot></slot>
+            </h4>
+            <h5 v-else-if="level==5">
+                <slot></slot>
+            </h5>
+            <h6 v-else-if="level==6">
+                <slot></slot>
+            </h6>
+        </div>
+    </template> -->
+
+    <script>
+        var child = {
+            // template: "#child",
+            props: ['level'],
+            render(createElement) { //ƒ (a, b, c, d) { return createElement(vm, a, b, c, d, true); }
+                return createElement(
+                    "h"+this.level,  //第一个参数a对应标签名<h6></h6>
+                    this.$slots.default //标签里面显示的内容(插槽形式)
+                )
+            },
+        }
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                level: 3
+            },
+            components: {child}
+        })
+    </script>
+</body>
+</html>

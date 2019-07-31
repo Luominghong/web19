@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<style type="text/css">
+			html,body,div,ul,li,p{margin: 0; padding: 0;}
+			ul,li{list-style: none;}
+			body{
+				background: #f2f2f2;
+			}
+			#list{
+				width: 1226px;
+				margin: auto;
+				padding: 20px;
+				display: flex;
+				justify-content: space-around;
+				align-content: space-around;
+			}
+			#list li{
+				width: 234px;
+				padding: 20px;
+				box-sizing: border-box;
+				background: #fff;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				align-items: center;
+				font-size: 14px;
+				color: #333;
+				position: relative;
+			}
+			#list li>div:nth-child(1){
+				height: 60%;
+			}
+			#list li>div:nth-child(2){
+				height: 40%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+			#list li>div:nth-child(2) p:nth-child(2){
+				color: #ff6700;
+				margin: 10px 0 20px;
+			}
+			#list li>div:nth-child(2) p:nth-child(3){
+				color: #888;
+			}
+			.shop{
+				width: 100px;
+				padding: 5px;
+				text-align: center;
+				border: 1px solid #ff6700;
+				background: #fff;
+				color: #FF6700;
+				position: absolute;
+				left: 50%;
+				margin-left: -50px;
+				bottom: 20px;
+				display: none;
+			}
+			.shop:hover{
+				background: #FF6700;
+				color: #fff;
+			}
+			#list li:hover .shop{
+				display: block;
+			}
+			#shoppingCart{
+				background: #fff;
+				width: 1226px;
+				margin: auto;
+				box-sizing: border-box;
+			}
+			.shoptitle,.cartlist{
+				height: 60px;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+                /* justify-content: flex-start; */
+				border-bottom: 1px solid #ccc;
+			}
+			.shoptitle>div,.cartlist>div{
+				text-align: center;
+			}
+			.shoptitle>div:nth-child(1),.cartlist>div:nth-child(1){
+				width: 110px;
+			}
+			.shoptitle>div:nth-child(2),.cartlist>div:nth-child(2){
+				width: 380px;
+				text-align: left;
+				padding-left: 40px;
+			}
+			.cartlist>div:nth-child(2) img{
+				vertical-align: middle;
+			}
+			.shoptitle>div:nth-child(3),.cartlist>div:nth-child(3){
+				width: 158px;
+			}
+			.shoptitle>div:nth-child(4)~div,.cartlist>div:nth-child(4)~div{
+				width: 150px;
+			}
+			.cartlist>div:nth-child(4) input{
+				width: 50px;
+				text-align: center;
+			}
+			.empty{
+				height: 100px;
+				line-height: 100px;
+				text-align: center;
+			}
+			#total{
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				height: 60px;
+				border-top: 1px solid #ccc;
+			}
+        </style>
+        <script src="./js/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<ul id="list">
+				<li v-for="item in goodsList">
+					<div><img :src="item.imgUrl" /></div>
+					<div>
+						<p>{{item.name}}</p>
+						<p>{{item.price}}元</p>
+						<p v-if="item.comment">{{item.comment}}人好评</p>
+					</div>
+					<div class="shop" @click="addToShoppingCart(item)">加入购物车</div>
+				</li>
+			</ul>
+			<div id="shoppingCart">
+				<div class="shoptitle">
+					<div><input type="checkbox" v-model="isCheckAll" />全选</div>
+					<div>商品名称</div>
+					<div>单价</div>
+					<div>数量</div>
+					<div>小计</div>
+					<div>操作</div>
+				</div>
+				<template v-if="shoplist.length!=0">
+					<ul>
+						<li class="cartlist" v-for="(item,index) in shoplist">
+							<div><input type="checkbox" :value="item.name" v-model="checkedArr" /></div>
+							<div>
+								<img :src="item.imgUrl" alt="" width="60" />
+								{{item.name}}
+							</div>
+							<div>{{item.price}}</div>
+							<div>
+								<button @click="changeNum('decrease',item)" :disabled="item.num<=1">-</button>
+								<input type="text" v-model="item.num"/>
+								<button @click="changeNum('increase',item)">+</button>
+							</div>
+							<div>{{item.num * item.price}}</div>
+							<div @click="del(item,index)">❌</div>
+						</li>
+					</ul>
+				</template>
+				<template v-else>					
+					<div class="empty">
+						购物车为空, 赶紧选购吧
+					</div>
+				</template>
+				<div id="total">
+					<p>共{{totalPiece}}件</p>
+					<p>合计{{totalPrice}}元</p>
+				</div>
+			</div>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: "#app",
+                data: {
+                    goodsList: [
+						{name: "小米蓝牙耳机AirDots青春版", price: 199, num: 1, imgUrl: "https://i1.mifile.cn/a1/pms_1540520049.41531994!140x140.jpg", comment: "1.2万"},
+						{name: "小米米家行车记录仪1S", price: 349, num: 1, imgUrl: "https://i1.mifile.cn/a1/pms_1539051273.95659582!140x140.jpg", comment: "2672"},
+						{name: "米家飞行员太阳镜", price: 99, num: 1, imgUrl: "https://i1.mifile.cn/a1/pms_1556528367.85034850!140x140.jpg", comment: "81"},
+						{name: "米家互联网空调C1", price: 2299, num: 1, imgUrl: "https://i1.mifile.cn/a1/pms_1553854346.26097782!140x140.jpg", comment: ""},
+						{name: "驱蚊片", price: 29, num: 1, imgUrl: "https://i1.mifile.cn/a1/pms_1528858798.51556173!140x140.jpg", comment: "1933"},
+                    ],
+                    shoplist: [],   //购物车的商品列表
+                    totalPiece: 0,  //总件数
+                    totalPrice: 0,   //总价
+                    isCheckAll: false,   //全选状态(是否全选)
+                    checkedArr: []       //复选框选中的商品数组
+				},
+				computed: {
+					
+				},
+                methods: {
+                    addToShoppingCart(item){    //加入购物车
+                        if(this.shoplist.indexOf(item) != -1){  //购物车商品列表已存在该商品
+                            item.num++;
+                            if(this.checkedArr.indexOf(item.name)!=-1){
+                                this.totalPiece++;
+                                this.totalPrice += item.price;
+                            }
+                        }else{
+                            this.shoplist.push(item);
+                            this.isCheckAll = false;
+                        }
+                    },
+                    changeNum(type,item){   //数量加减
+                        if(type == 'decrease'){ //减
+                            item.num--;
+                            if(this.checkedArr.indexOf(item.name)!=-1){
+                                this.totalPiece--;
+                                this.totalPrice -= item.price;
+                            }
+                        }else{  //加
+                            item.num++;
+                            if(this.checkedArr.indexOf(item.name)!=-1){
+                                this.totalPiece++;
+                                this.totalPrice += item.price;
+                            }
+                        }
+                    },
+                    del(item, index){   //删除
+                        this.shoplist.splice(index,1);  //从购物车对应的商品列表数组删除对应下标的商品
+                        if(this.checkedArr.indexOf(item.name)!=-1){
+                            this.totalPiece -= item.num;
+                            this.totalPrice -= item.num*item.price;
+                        }
+                        item.num = 1;   //重置该商品的数量为1
+                        if(this.shoplist.length == 0){
+                            this.isCheckAll = false;
+						}
+						if(this.checkedArr.length == this.shoplist.length){
+							this.isCheckAll = true;
+						}
+                    }
+                },
+                watch: {
+                    isCheckAll(val){    //监听全选状态
+                        if(val){
+                            this.checkedArr = [];
+                            this.totalPiece = 0;
+                            this.totalPrice = 0;
+                            this.shoplist.forEach(item=>{
+                                this.checkedArr.push(item.name);    //将所有商品列表名称添加进checkedArr里面, 表示全选
+                                this.totalPiece += item.num;
+                                this.totalPrice += item.num*item.price;
+                            })
+                        }else{  //isCheckAll为false
+                            if(this.checkedArr.length == this.shoplist.length){ //当复选框选中个数与商品列表数组个数一致时(即原先为全选时)
+                                this.checkedArr = [];
+                                this.shoplist.forEach(item=>{
+                                    this.totalPiece -= item.num;
+                                    this.totalPrice -= item.num*item.price;
+                                })
+                            }else{  //取消购物车商品列表中的某个复选框时, 导致isCheckAll为false的情况
+                               
+                            }
+                        }
+                    },
+                    checkedArr(val){    //监听购物车复选框数组变化
+                        if(val.length != this.shoplist.length){    //当复选框的选中长度与购物车里面的商品个数不一致时, 说明没有全选
+							this.isCheckAll = false;
+							this.totalPiece = 0;
+							this.totalPrice = 0;
+							this.shoplist.forEach(item=>{
+								if(this.checkedArr.indexOf(item.name) != -1){   //该商品选中
+									this.totalPiece += item.num;    //总件数
+									this.totalPrice += item.num*item.price; //总价
+								}
+							})
+                        }else{
+                            this.isCheckAll = true;
+                        }
+                    }
+                },
+            })
+        </script>
+    </body>
+</html>

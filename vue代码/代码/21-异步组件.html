@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <my-button></my-button>
+    </div>
+
+    <script>
+        Vue.component("my-button", function(resolve, reject){
+            axios.get("https://www.easy-mock.com/mock/5ba06ec82ee5a7654dc13dd7/example/maoyancommingsoon").then(function(res){
+                var mydata = res.data.coming
+                resolve({
+                    data(){
+                        return {
+                            mydata
+                        }
+                    },
+                    template: `
+                        <ul>
+                            <li v-for="item in mydata">
+                                {{item.nm}}
+                            </li>
+                        </ul>
+                    `
+                })
+            })
+            // setTimeout(function(){
+            //     resolve({
+            //         template: `
+            //             <div>异步组件</div>
+            //         `
+            //     })
+            // },5000)
+        })
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                
+            }
+        })
+    </script>
+</body>
+</html>

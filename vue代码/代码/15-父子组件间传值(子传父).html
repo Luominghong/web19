@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!--
+        组件仅能存在一个根节点
+
+        组件间传值的方式:
+            1. 父传子
+                子组件通过props接收父组件的数据
+            2. 子传父
+                a. 在子组件里面的点击事件触发aa
+                b. 在aa方法中, 通过$.emit()方法将数据发送到bb的自定义事件中
+                c. 在父组件中, 通过@bb触发对应的cc方法,进行接收(bb是父组件中一直在监听着的事件)
+
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <!-- 父组件通过监听子组件的事件,来对应触发父组件的方法（bb是子组件的事件,cc是父组件的方法) -->
+       <my-child :info="msg" :list="list" @bb="cc"></my-child>
+       <p>{{num}}</p>
+    </div>
+
+    <script>
+        var myChild = {
+            props: ["info","list"],    //1.通过info访问父组件的数据
+            template: `
+                <div>
+                    <p>{{info}}</p>
+                    <ul>
+                        <li v-for="item in list">
+                            <span>name: {{item.name}}</span>
+                            <span>age: {{item.age}}</span>
+                        </li>
+                    </ul>
+                    <button @click="aa">{{num}}</button>
+                </div>
+            `,
+            data(){
+                return {
+                    num: 0
+                }
+            },
+            methods: {
+                aa(){
+                    this.num++;
+                    this.$emit("bb", this.num)
+                }
+            },
+        }
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                msg: "我爱敲代码!",
+                list: [
+                    {name: "小明", age: 18},
+                    {name: "大华", age: 28},
+                    {name: "小花", age: 16},
+                ],
+                num: ""
+            },
+            // components: {myChild1: myChild1,myChild2: myChild2}
+            components: {myChild},
+            methods: {
+                cc(val){
+                    this.num = val;     //接收来自子组件的值
+                }
+            }
+        })
+    </script>
+</body>
+</html>

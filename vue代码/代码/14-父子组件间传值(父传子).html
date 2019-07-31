@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!--
+        组件仅能存在一个根节点
+
+        组件间传值的方式:
+            1. 父传子
+                子组件通过props接收父组件的数据
+
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <!-- 2.将父组件data里面的msg的数据绑定到info自定义属性中-->
+       <my-child :info="msg" :list="list"></my-child>
+    </div>
+
+    <script>
+        // 注册局部组件(组件名, option)
+        // 子组件
+            /*
+            * 1.通过props自定义定义属性info
+            * 2.在<my-child></my-child>组件中通过info属性访问父组件的数据
+            * 3.将接收的数据渲染到template模板中
+            */
+        var myChild = {
+            props: ["info","list"],    //1.通过info访问父组件的数据
+            template: `
+                <div>
+                    <p>{{info}}</p>
+                    <ul>
+                        <li v-for="item in list">
+                            <span>name: {{item.name}}</span>
+                            <span>age: {{item.age}}</span>
+                        </li>
+                    </ul>
+                </div>
+            `
+        }
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                msg: "我爱敲代码!",
+                list: [
+                    {name: "小明", age: 18},
+                    {name: "大华", age: 28},
+                    {name: "小花", age: 16},
+                ]
+            },
+            // components: {myChild1: myChild1,myChild2: myChild2}
+            components: {myChild}
+        })
+    </script>
+</body>
+</html>

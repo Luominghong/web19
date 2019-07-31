@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!--
+        v-model进行表单绑定, 可以获取表单对应的value
+            如果是value有多个时, 使用数组形式存储
+
+            修饰符:
+                lazy: 将input的oninput事件改成onchange事件
+                number: 将输入框的值转成数字类型, 如果值无法被parseFloat()转成数字时, 则显示原始值
+                trim:  自动过滤用户输入的首尾空白字符
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <!-- {{msg}} -->
+        <!-- lazy修饰符是将input的oninput事件改成onchange事件 -->
+       <input type="text" v-model.lazy.number.trim="firstName">{{fullName}}
+       
+       <br />
+       <!-- 单选框 -->
+       <input type="radio" name="gender" id="male" value="male" v-model="gender"><label for="male">男</label>
+       <input type="radio" name="gender" id="female" value="female" v-model="gender"><label for="female">女</label>
+       <br />
+       <!-- 复选框 -->
+       <template v-for="item in sports">
+           <input type="checkbox" name="basketball" :id="item.id" :value="item.id" v-model="sport">
+           <label :for="item.id">{{item.name}}</label>
+       </template>
+       <label><input type="checkbox" name="" id="" v-model="checkAll">全选</label>
+       <br />
+       <!-- 下拉框 -->
+        <select name="city" id="city" v-model="city">
+            <template v-for="item in cities">
+                <option :value="item">{{item}}</option>
+            </template>
+        </select> 
+
+        <!-- 多选下拉框 -->
+        <select name="city" id="city" v-model="moreCity" multiple="multiple">
+            <template v-for="item in cities">
+                <option :value="item">{{item}}</option>
+            </template>
+        </select> 
+
+        <textarea v-model.lazy="firstName"></textarea>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                firstName: "小花",
+                fullName: "",
+                changeVal: "",
+                gender: "male",
+                sport: [],
+                sports: [
+                    {id: "basketball", name: "篮球"},
+                    {id: "football", name: "足球"},
+                    {id: "baseball", name: "棒球"},
+                    {id: "pingpong", name: "乒乓球"},
+                    {id: "vollyball", name: "排球"}
+                ],
+                checkAll: false,
+                cities: ["深圳","东莞","惠州","广州"],
+                city: "",
+                moreCity: []
+            },
+            // 侦听器(当其他数据需要依赖某数据变化时)
+            watch: {
+                gender(val){    //侦听的数据
+                    console.log("当前选中的值是:"+val)
+                },
+                msg(newVal,oldVal){ //当参数为两个时, 第一个参数对应新值, 第二个参数对应旧值
+                    console.log(newVal);
+                    console.log(oldVal);
+                    if(newVal == "你好"){
+                        this.changeVal = "hello";
+                    }
+                },
+                firstName(newVal){  //监听firstName这个数据的变化, 当它变化时, fullName也随着变化
+                    console.log(typeof newVal);
+                    this.fullName = "刘"+newVal;
+                },
+                sport(val){
+                    console.log(val);
+                },
+                checkAll(val){  //全选/全不选
+                    if(val){
+                        this.sports.forEach(item=>{
+                            this.sport.push(item.id);
+                        })
+                        console.log(this.sport);
+                    }else{
+                        this.sport = []
+                    }
+                },
+                city(val){
+                    console.log(val)
+                },
+                moreCity(val){
+                    console.log(val);
+                }
+            },
+        })
+    </script>
+</body>
+</html>

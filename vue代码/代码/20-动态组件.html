@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <style>
+        .active{
+            color: #ff6700;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        当绑定动态组件时, 组件会每次进行创建并销毁,性能较差, 可以使用keep-alive进行缓存
+        keep-alive可以使用activated监听激活
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <button v-for="item in list" @click="title=item" :class="item.name==title.name?'active':''">{{item.name}}</button>
+        <div>
+            <!-- 用来挂载子组件 -->
+            <keep-alive>
+                <component :is="change" :title="title"></component>
+            </keep-alive>
+        </div>
+    </div>
+
+    <script>
+        var child1 = {
+            template: `
+                <div>
+                    {{title.content}}
+                </div>
+            `,
+            props: ["title"],
+            created() {
+                console.log("组件1创建")
+            },
+            destroyed() {
+                console.log("组件1销毁")
+            },
+            activated(){    //仅用于使用了keep-alive作用下
+                console.log("组件1激活了")
+            }
+        }
+        var child2 = {
+            template: `
+                <div>
+                    {{title.content}}
+                </div>
+            `,
+            props: ["title"],
+            created() {
+                console.log("组件2创建")
+            },
+            destroyed() {
+                console.log("组件2销毁")
+            },
+            activated(){    //仅用于使用了keep-alive作用下
+                console.log("组件2激活了")
+            }
+        }
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                list: [
+                    {name: "tab1", content: "我是tab1的内容"},
+                    {name: "tab2", content: "我是tab2的内容"},
+                ],
+                title: "",
+                info: "父组件的消息"
+            },
+            created(){
+                this.title = this.list[0]
+            },
+            computed: {
+                change(){
+                    if(this.title.name == "tab1"){
+                        return 'child1'
+                    }else{
+                        return 'child2'
+                    }
+                }
+            },
+            components: {child1, child2}
+        })
+    </script>
+</body>
+</html>

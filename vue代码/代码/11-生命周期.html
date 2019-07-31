@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <!--
+        从创建到销毁的整个过程, 主要有四个阶段, 对应有8个生命周期钩子函数
+            beforeCreate    创建之前
+            created         创建之后
+            beforeMount     挂载之前
+            mounted         挂载之后
+            beforeUpdate    更新之前
+            updated         更新之后
+            beforeDestroy   销毁之前
+            destroyed       销毁之后
+
+        不要在生命周期钩子使用箭头函数
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+       {{msg}}
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            // el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                msg: "你好"
+            },
+            beforeCreate(){
+                console.log("创建之前");
+            },
+            // beforeCreate: ()=>{  会出现this指向问题, 此时指向window
+            //     console.log(this);
+            // },
+            async created(){  //进行ajax请求
+                console.log("创建之后");
+                let res1 = await axios.get("https://www.easy-mock.com/mock/5ba06ec82ee5a7654dc13dd7/example/maoyancommingsoon");
+                let res2 = await axios.get("https://www.easy-mock.com/mock/5ba06ec82ee5a7654dc13dd7/example/maoyanExpect");
+                console.log(res1);
+                console.log(res2);
+            },
+            beforeMount(){
+                console.log("挂载之前");
+            },
+            mounted(){
+                console.log("挂载之后");
+            },
+            beforeUpdate(){
+                console.log("更新之前");
+            },
+            updated(){
+                console.log("更新之后");
+            },
+            beforeDestroy(){
+                console.log("销毁之前");
+            },
+            destroyed(){
+                console.log("销毁之后");
+            },
+        }).$mount("#app");
+    </script>
+</body>
+</html>

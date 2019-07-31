@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <link href="./css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="./js/digui.js"></script>
+    <style>
+        ul,li{list-style: none;}
+        i{
+            color: rgb(240, 199, 145);
+        }
+    </style>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <ul>
+            <child :mydata="item" v-for="item in mysource" :key="item.id"></child>
+            <!-- <li></li>
+            <li></li> -->
+        </ul>
+    </div>
+
+    <!-- 子组件模板 -->
+    <template id="child">
+        <li>
+            <div @click="open = !open"> <!--点击展开合起: open为true时展开, false时合起-->
+                <!-- 当存在子节点时, 通过判断open来显示合起的文件夹图标还是展开的图标 -->
+                <i v-if="mydata.childTreeNode && mydata.childTreeNode.length" :class="['fa', open? 'fa-folder-open':'fa-folder']"></i>
+                <!-- 当不存在子节点时，显示为文件类型的图标 -->
+                <i v-else class="fa fa-file-text"></i>
+                {{mydata.data.menuName}}
+            </div>
+            <ul v-show="open">  <!--子节点列表, 当open为true时显示-->
+                <child :mydata="each" v-for="each in mydata.childTreeNode" :key="each.id"></child>
+            </ul>
+        </li>
+    </template>
+
+    <script>
+        var child = {
+            template: "#child",
+            name: "child",  //组件必须拥有名字
+            props: ["mydata"],
+            data(){
+                return {
+                    open: false
+                }
+            }
+        }
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                mysource: data
+            },
+            components: {child}
+        })
+    </script>
+</body>
+</html>

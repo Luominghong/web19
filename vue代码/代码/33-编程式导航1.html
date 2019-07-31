@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <!-- 1.引入vue-router.js -->
+    <script src="./js/vueRouter.js"></script>
+    <style>
+        #app .router-link-active{
+            color: #ff6700;
+        }
+        a:active{
+            color: #000;
+        }
+        a:link{
+            color: #000
+        }
+        a:visited{
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+    <!--
+        编程式导航:
+            方式1:
+                通过this.$router.push()进行导航, 参数接收一个对象
+                    {name: 路由名称, params: {key: value进行传参}}
+                接收参数
+                    this.$route.params
+
+
+    -->
+    <div id="app">
+        <template v-for="item in list">
+            <div @click="goTo(item)">Go to {{item.name}}</div>
+        </template>
+
+        <router-view></router-view>
+    </div>
+
+    <script>
+        // 子组件1
+        var child1 = {
+            template: `
+                <div>
+                    111
+                    {{receiveMsg.name}}
+                    {{receiveMsg.id}}
+                    {{receiveMsg.msg}}
+                </div>
+            `,
+            data(){
+                return {
+                    receiveMsg: {}
+                }
+            },
+            created() {
+                if(this.$route.params){
+                    this.receiveMsg = this.$route.params
+                }
+            }
+        }
+        var child2 = {
+            template: `
+                <div>
+                    222
+                    {{receiveMsg.name}}
+                    {{receiveMsg.id}}
+                    {{receiveMsg.msg}}
+                </div>
+            `,
+            data(){
+                return {
+                    receiveMsg: {}
+                }
+            },
+            created() {
+                if(this.$route.params){
+                    this.receiveMsg = this.$route.params
+                }
+            }
+        }
+
+        // 2.定义路由表
+        const routes = [
+            { path: '/', component: child1 },
+            { path: '/child1', name: 'child1', component: child1 },
+            { path: '/child2', name: 'child2', component: child2 },
+        ]
+
+        // 3. 创建 router 实例，然后传 `routes` 配置
+        const router = new VueRouter({
+            routes 
+        })
+
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                list: [
+                    {name: "小明", num: 12345, id: "child1"},
+                    {name: "小花", num: 56789, id: "child2"}
+                ]
+            },
+            methods: {
+                goTo(item){
+                    this.$router.push({name: item.id, params: {id: item.num, name: item.name, msg: "都要传的数据"}});
+                }
+            },
+            router  //注册路由 相当于 router: router
+        })
+    </script>
+</body>
+</html>

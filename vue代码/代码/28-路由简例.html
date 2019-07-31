@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <!-- 1.引入vue-router.js -->
+    <script src="./js/vueRouter.js"></script>
+    <style>
+        #app .router-link-active{
+            color: #ff6700;
+        }
+        a:active{
+            color: #000;
+        }
+        a:link{
+            color: #000
+        }
+        a:visited{
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+    <!--
+        路由配置步骤:
+            1.引入vue-router.js文件
+            2.配置路由表
+                [
+                    {path: '路径', component: 组件名},
+                    {path: '路径', component: 组件名},
+                ]
+            3.实例化vueRouter
+                new VueRouter({
+                    routes: 路由表名称
+                })
+            4.将路由实例注册到Vue实例对象中
+                new Vue({
+                    router: vueRouter实例对象
+                })
+            
+            页面显示:
+                导航链接:(会将router-link解析成a标签)
+                    <router-link to="跳转到的路径"></router-link>
+                路由显示:
+                    <router-view></router-view>
+
+    -->
+    <div id="app">
+        <!-- 使用 router-link 组件来导航. -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <router-link to="/child1">Go to child1</router-link>
+        <router-link to="/child2">Go to child2</router-link>
+
+        <!-- 路由出口 -->
+        <!-- 路由匹配到的组件将渲染在这里 -->
+        <router-view></router-view>
+    </div>
+
+    <script>
+        // 子组件1
+        var child1 = {
+            template: "<div>child1</div>"
+        }
+         // 子组件2
+        var child2 = {
+            template: "<div>child2</div>"
+        }
+
+        // 2.定义路由表
+        const routes = [
+            { path: '/child1', component: child1 }, //path是路径, component是组件名
+            { path: '/child2', component: child2 }
+        ]
+
+        // 3. 创建 router 实例，然后传 `routes` 配置
+        const router = new VueRouter({
+            // key为routes是固定的
+            routes // (缩写) 相当于 routes: routes
+        })
+
+        // 以上两步可合成为以下
+        // const router = new VueRouter({
+        //     routes: [
+        //         { path: '/child1', component: child1 }, //path是路径, component是组件名
+        //         { path: '/child2', component: child2 }
+        //     ]
+        // })
+
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                
+            },
+            components: {child1, child2},
+            router  //注册路由 相当于 router: router
+        })
+    </script>
+</body>
+</html>

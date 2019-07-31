@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <!-- 1.引入vue-router.js -->
+    <script src="./js/vueRouter.js"></script>
+    <style>
+        #app .router-link-active{
+            color: #ff6700;
+        }
+        a:active{
+            color: #000;
+        }
+        a:link{
+            color: #000
+        }
+        a:visited{
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+    <!--
+        路由传参:
+            在router-link通过{name: 'movies', params: {id: num}}传参
+                [params: 存储所有参数]
+            在跳转到组件里面接收:
+                通过$route.params.参数的key
+    -->
+    <div id="app">
+        <!-- 使用 router-link 组件来导航. -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <router-link :to="{name: 'movies', params: {id: num, list: list}}">Go to child</router-link>
+
+        <!-- 路由出口 -->
+        <!-- 路由匹配到的组件将渲染在这里 -->
+        <router-view></router-view>
+    </div>
+
+    <script>
+        // 子组件1
+        var child = {
+            template: `
+                <div>
+                    User {{ $route.params.id }}
+                    <ul>
+                        <li v-for="item in $route.params.list">
+                            {{item.name}}
+                        </li>
+                    </ul>
+                </div>
+            `
+        }
+
+        // 2.定义路由表
+        const routes = [
+            // :id指的是动态参数(url会显示对应参数)
+            { path: '/movies/:id', name: 'movies', component: child }, //path是路径, component是组件名
+        ]
+
+        // 3. 创建 router 实例，然后传 `routes` 配置
+        const router = new VueRouter({
+            // key为routes是固定的
+            routes // (缩写) 相当于 routes: routes
+        })
+
+        // 以上两步可合成为以下
+        // const router = new VueRouter({
+        //     routes: [
+        //         { path: '/child1', component: child1 }, //path是路径, component是组件名
+        //         { path: '/child2', component: child2 }
+        //     ]
+        // })
+
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                num: 1,
+                list: [
+                    {name: "小明"},
+                    {name: "小花"}
+                ]
+            },
+            components: {child},
+            router  //注册路由 相当于 router: router
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <style>
+        span{
+            display: inline-block;
+            width: 80px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <ul>
+            <li v-for="(item,index) in goodsList" :key="index">
+                <span>{{item.name}}</span>
+                <span>{{item.price}}</span>
+                <button @click="changeNum('decrease',item)" :disabled="item.num<=0">-</button>
+                <span>{{item.num}}</span>
+                <button @click="changeNum('increase',item)">+</button>
+                <span>{{item.price*item.num}}</span>
+            </li>
+       </ul>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                goodsList: [
+                    {"name": "华为", "price": 3000, "num": 0},
+                    {"name": "iphoneXS", "price": 9000, "num": 0},
+                    {"name": "小米", "price": 2000, "num": 2},
+                    {"name": "小灵通", "price": 98, "num": 0},
+                ]
+            },
+            methods: {
+                changeNum(type,item){
+                    if(type == 'decrease'){ //减
+                        item.num--;
+                    }else{  //加
+                        item.num++;
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+</html>

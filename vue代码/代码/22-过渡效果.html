@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/animate.css">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <style>
+        .active{
+            color: #ff6700;
+        }
+        #app>div>div{
+            width: 300px;
+            height: 300px;
+            border: 1px solid yellow;
+        }
+        #box1{
+            background: red;
+        }
+        #box2{
+            background: blue;
+        }
+        .mybox{
+            height: 200px;
+        }
+        /* 当name为fade时 */
+        .fade-enter-active, .fade-leave-active {    /*fade-enter-active进入效果激活时, 离开效果激活时*/
+            transition: all 2s;
+        }
+        .fade-enter, .fade-leave-to {  /*进入前透明度为0, 离开到透明度为0*/
+            transform: translateY(10px);
+            opacity: 0;
+        }
+        /* 当name为slide-fade */
+        .slide-fade-enter-active {
+            transition: all .3s ease;
+        }
+        .slide-fade-leave-active {
+            transition: all 2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+        .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active for below version 2.1.8 */ {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        fade-enter: 定义进入过渡的开始状态
+        fade-enter-active: 定义进入过渡生效时的状态
+        fade-enter-to: 定义进入过渡的结束状态
+        fade-leave: 定义离开过渡的开始状态
+        fade-leave-active: 定义离开过渡生效时的状态
+        fade-leave-to: 定义离开过渡的结束状态
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <button v-for="item in list" @click="title=item" :class="item.name==title.name?'active':''">{{item.name}}</button>
+        <div class="mybox">
+            <!-- 用来挂载子组件 -->
+            <!-- <transition name="fade" mode="out-in"> -->
+            <!-- <transition name="slide-fade" mode="out-in"> -->
+            <transition mode="out-in" name="custom-classes-transition" enter-active-class="animated jello" leave-active-class="animated zoomOutLeft">
+                <component :is="change" :title="title"></component>
+            </transition>
+        </div>
+    </div>
+
+    <script>
+        var child1 = {
+            template: `
+                <div id="box1">
+                    {{title.content}}
+                </div>
+            `,
+            props: ["title"],
+            created() {
+                console.log("组件1创建")
+            },
+            destroyed() {
+                console.log("组件1销毁")
+            },
+            activated(){    //仅用于使用了keep-alive作用下
+                console.log("组件1激活了")
+            }
+        }
+        var child2 = {
+            template: `
+                <div id="box2">
+                    {{title.content}}
+                </div>
+            `,
+            props: ["title"],
+            created() {
+                console.log("组件2创建")
+            },
+            destroyed() {
+                console.log("组件2销毁")
+            },
+            activated(){    //仅用于使用了keep-alive作用下
+                console.log("组件2激活了")
+            }
+        }
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                list: [
+                    {name: "tab1", content: "我是tab1的内容"},
+                    {name: "tab2", content: "我是tab2的内容"},
+                ],
+                title: "",
+                info: "父组件的消息"
+            },
+            created(){
+                this.title = this.list[0]
+            },
+            computed: {
+                change(){
+                    if(this.title.name == "tab1"){
+                        return 'child1'
+                    }else{
+                        return 'child2'
+                    }
+                }
+            },
+            components: {child1, child2}
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <style>
+        tr td:nth-child(1){
+            text-align: right;
+        }
+        #table2 th{
+            color: #fff;
+        }
+        #table2 td{
+            text-align: center;
+        }
+        #table2 th, #table2 td{
+            padding: 0 25px;
+        }
+        #box{
+            width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+        #table1{
+            margin: auto;
+        }
+        #nodata{
+            margin: 50px;
+        }
+        #table2 tr:not(:first-child):nth-child(odd){
+            background: #ccc;
+        }
+        #table2 tr:not(:first-child):nth-child(even){
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <child1></child1>
+       <child2></child2>
+    </div>
+
+    <template id="child1">
+        <table id="table1">
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" v-model.trim="name" /></td>
+            </tr>
+            <tr>
+                <td>Age:</td>
+                <td><input type="text" v-model.trim.number="age" /></td>
+            </tr>
+            <tr>
+                <td>Sex:</td>
+                <td>
+                    <select name="sex" id="" v-model="sex">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button @click="create">Create</button></td>
+            </tr>
+        </table>
+    </template>
+
+    <template id="child2">
+        <div id="box">
+            <table id="table2" border="1" cellspacing="0" cellpadding="5" bgColor="#42B983">
+                <tr>
+                    <th v-for="item in title">{{item}}</th>
+                </tr>
+                <tr v-for="(each,ind) in list">
+                    <td>{{each.name}}</td>
+                    <td>{{each.age}}</td>
+                    <td>{{each.sex}}</td>
+                    <td>
+                        <button @click="del(ind)">Delete</button>
+                    </td>
+                </tr>
+            </table>
+            <div id="nodata" v-if="list.length==0">
+                当前没有数据
+            </div>
+        </div>
+    </template>
+
+    <script>
+        let bus = new Vue();
+        // 定义两个子组件
+        let child1 = {
+            template: "#child1",
+            data(){
+                return {
+                    name: "",
+                    age: "",
+                    sex: ""
+                }
+            },
+            methods: {
+                create(){
+                    if(this.name && this.age && this.sex){
+                        let obj = {name: this.name, age: this.age, sex: this.sex};  //创建的对象
+                        bus.$emit("receiveMsg", obj);   //将创建的对象发送到子组件2
+                        // this.name = "";
+                        // this.age = "";
+                        // this.sex = "";
+                    }else{
+                        alert("请输入对应内容");
+                    }
+                }
+            },
+            mounted() {
+                bus.$on("clear",()=>{   //接收来自子组件2的清除消息
+                    this.name = "";
+                    this.age = "";
+                    this.sex     = "";
+                })
+            },
+        }
+
+        let child2 = {
+            template: "#child2",
+            data(){
+                return {
+                    title: ["Name","Age","Sex","Delete"],
+                    list: []    //数据数组(渲染到列表中)
+                }
+            },
+            mounted() {
+                bus.$on("receiveMsg", res=>{    //接收来自组件1的对象
+                    this.list.push(res);
+                    bus.$emit("clear");     //发送清除输入框的消息
+                })
+            },
+            methods: {
+                del(index){
+                    this.list.splice(index,1);
+                }
+            },
+        }
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                
+            },
+            components: {child1,child2}
+        })
+    </script>
+</body>
+</html>

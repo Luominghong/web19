@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!--
+        mixin混入可以包含组件的任意选项, 当组件中需要复用时, 可将公用选项写在mixin里面, 混入组件本身
+        (如果组件已有该选项且数据重叠, 则优先使用本组件的内容)
+        (mixin的格式需与混入的组件格式一致, 如: 在组件中, data是函数, 且有返回值)
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+       {{info}}
+       {{show()}}
+       <child1></child1>
+       <child2></child2>
+    </div>
+
+    <script>
+        var mixin1 = {
+            created(){
+                console.log("我创建了")
+            },
+            methods: {
+                show(){
+                    console.log("我引用了mixin的共用方法");
+                }
+            },
+        }
+
+        // 组件的date格式必须是函数,且有返回值, mixin的格式需与组件格式一致
+        var mixin2 = {
+            data(){
+                return {
+                    msg: "你好",
+                    info: "Hello"
+                }
+            },
+            created(){
+                console.log("我创建了")
+            }
+        }
+        var mixin3 = {
+            data(){
+                return {
+                    info: "我是mixin3的info",
+                    data1: "好好学习",
+                    data2: "天天向上"
+                }
+            },
+            created(){
+                console.log("我创建了")
+            }
+        }
+
+        var child1 = {
+            template: "<div>{{info}}{{data1}}{{data2}}{{show()}}</div>",
+            mixins: [mixin1, mixin3, mixin2]    //当数据重复时, 后面引入的会覆盖前面的
+        }
+        var child2 = {
+            template: "<div>{{msg}}{{show()}}</div>",
+            mixins: [mixin1,mixin2]
+        }
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                info: "web17"
+            },
+            mixins: [mixin1],
+            components: {child1, child2}
+        })
+    </script>
+</body>
+</html>

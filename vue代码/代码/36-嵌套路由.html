@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <script src="./js/vueRouter.js"></script>
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <style>
+        #tabbarUl{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: .5px solid #d8d8d8;
+            background: #fff;
+        }
+        #tabbarUl li{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+        }
+        #tabbarUl li i{
+            font-size: 24px;
+        }
+        #tabs ul{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        #tabs ul li{
+            padding: 10px 15px;
+            text-align: center;
+        }
+        .active{
+            color: #ef4238;
+            border-bottom: 2px solid #ef4238;
+        }
+    </style>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <tabbar></tabbar>
+       <keep-alive>
+           <router-view></router-view>
+       </keep-alive>
+    </div>
+
+    <template id="tabbar">
+        <ul id="tabbarUl">
+            <li v-for="item in list" @click="change(item)" :class="{'active': item.title==nowItem}">
+                <i :class="`iconfont icon-${item.icon}`"></i>
+                {{item.title}}
+            </li>
+        </ul>
+    </template>
+    <script>
+        var mixin = {
+            methods: {
+                change(item){
+                    this.nowItem = item.title
+                    this.$router.push({path: item.path})
+                }
+            }
+        }
+        // 电影组件
+        var movie = {
+            template: `
+                <div id="tabs">
+                    <ul>
+                        <li @click="change(item)" v-for="item in list" :class="{'active': item.title==nowItem}">
+                            {{item.title}}
+                        </li>
+                    </ul>
+                    <router-view></router-view>
+                </div>
+            `,
+            data(){
+                return {
+                    list: [
+                        {title: "正在热映", path: "nowPlaying"},
+                        {title: "即将上映", path: "commingSoon"},
+                    ],
+                                                        nowItem: "正在热映"
+                }
+            },
+            mixins: [mixin]
+        }
+        // 正在热映组件
+        var nowPlaying = {
+            template: `
+                <div>正在热映</div>
+            `
+        }
+        // 即将上映组件
+        var commingSoon = {
+            template: `
+                <div>即将上映</div>
+            `
+        }
+
+        // 影院组件
+        var cinema = {
+            template: `
+                <div>影院</div>
+            `
+        }
+        // 我的组件
+        var mine = {
+            template: `
+                <div>我的</div>
+            `
+        }
+        // 切换组件
+        var tabbar = {
+            template: '#tabbar',
+            data(){
+                return {
+                    list: [
+                        {title: "电影", icon: "dianying", path: "/movie"},
+                        {title: "影院", icon: "yingyuana", path: "/cinema"},
+                        {title: "我的", icon: "wode", path: "/mine"}
+                    ],
+                    nowItem: "电影"
+                }
+            },
+            mixins: [mixin]
+        }
+
+        // 1.定义路由表
+        var routes = [
+            {
+                path: '/',
+                redirect: '/movie'
+            },
+            {
+                path: '/movie', 
+                component: movie,
+                children: [ //子路由
+                    {path: '/', redirect: 'nowPlaying'},
+                    {path: 'nowPlaying', name: 'nowPlaying', component: nowPlaying},
+                    {path: 'commingSoon', name: 'commingSoon', component: commingSoon},
+                ]
+            },
+            {path: '/cinema', name: 'cinema', component: cinema},
+            {path: '/mine', name: 'mine', component: mine},
+        ]
+
+        // 2.实例化VueRouter
+        const router = new VueRouter({
+            routes
+        })
+
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                
+            },
+            components: {tabbar},
+            router
+        })
+    </script>
+</body>
+</html>

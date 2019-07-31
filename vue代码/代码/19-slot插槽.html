@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <my-child :my-list="mylist">
+           <template v-slot:header>
+               <header>我是头部内容</header>
+           </template>
+            <template>
+                <p>{{info}}</p>
+            </template>
+            <template v-slot:footer="slotProps">    <!--2.slotProps是插槽props, 接收子组件里面的数据-->
+                <footer>
+                    我是底部内容
+                    {{slotProps.aa}}    <!--slotProps是一个接收子组件数据的对象-->
+                    {{slotProps.mm}}
+                </footer>
+            </template>
+       </my-child>
+    </div>  
+
+    <template id="child">
+        <div>
+            <!-- 具名插槽 -->
+            <slot name="header"></slot>
+            <!--匿名插槽-->
+            <slot name="default"></slot>
+            <ul>
+                <li v-for="item in myList">
+                    {{item}}
+                </li>
+            </ul>
+            <!-- 具名插槽(1.通过定义属性来传递mydata和mm) -->
+            <slot name="footer" :aa="mydata" :mm="mm"></slot>
+        </div>
+    </template>
+
+    <script>
+        var child = {
+            template: "#child",
+            props: {
+                "myList": Array,
+            },
+            data(){
+                return {
+                    mydata: "我是子组件的数据",
+                    mm: "快吃饭了"
+                }
+            }
+        }
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                mylist: ["html","css","javascript"],
+                str: {name: "小花"},
+                info: "你好",
+                num: 88,
+                msg: 199,
+            },
+            components: {myChild: child}
+        })
+    </script>
+</body>
+</html>

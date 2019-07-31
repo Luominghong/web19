@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <p>性别: {{gender | change}}</p>
+       <p>时间: {{timestamps | transTime}}</p>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                gender: 0,
+                timestamps: 1560996137659,
+            },
+            filters: {
+                change(val){ //change是过滤器的名称, val指的是需要过滤的数据
+                    switch(val){
+                        case 0: return "女";
+                        break;
+                        case 1: return "男";
+                        break;
+                    }   
+                },
+                transTime(val){
+                    let now = new Date(val);
+                    let oYear = now.getFullYear();  //年
+                    let oMonth = addZero(now.getMonth()+1);  //月
+                    let oDate = addZero(now.getDate());      //日
+                    let oHour = addZero(now.getHours());     //时
+                    let oMinute = addZero(now.getMinutes());     //分
+                    let oSecond = addZero(now.getSeconds());     //秒 
+                    let nowTime = `${oYear}/${oMonth}/${oDate} ${oHour}:${oMinute}:${oSecond}`;
+                    return nowTime;
+
+                    function addZero(num){
+                        if(num < 10){
+                            return "0"+num;
+                        }else{
+                            return num;
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

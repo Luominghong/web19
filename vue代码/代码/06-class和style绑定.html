@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+    <style>
+        ul{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 49px;
+            border-top: 1px solid #999;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .active{
+            color: #f03d37;
+        }
+        .detive{
+            color: #ccc;
+        }
+        .bg{
+            background: pink;
+        }
+    </style>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <ul>
+           <!-- 判断条件item.name==defaultActive为true时, 添加active的class -->
+           <!-- <li :class="{'active': item.name==defaultActive}" v-for="item in list" @click="change(item)">{{item.name}}</li> -->
+           
+           <!-- 判断条件为真时, 启用active的class, 为假时,启用detive的class -->
+           <!-- <li :class="item.name==defaultActive? 'active' : 'detive'" v-for="item in list" @click="change(item)">{{item.name}}</li> -->
+       
+           <!-- 多个class都需要判断渲染条件时,格式为{class名1: 条件, class名2: 条件} -->
+           <!-- <li :class="{'active': item.name==defaultActive, 'bg': index==2}" v-for="(item,index) in list" @click="change(item)">{{item.name}}</li> -->
+           
+           <!-- class对象进行渲染 -->
+           <!-- <li :class="classObj" v-for="(item,index) in list" @click="change(item)">{{item.name}}</li> -->
+           
+           <!-- 数组形式 -->
+           <!-- <li :class="[activeClass, bgClass]" v-for="(item,index) in list" @click="change(item)">{{item.name}}</li> -->
+        
+           <li :style="{color: item.name==defaultActive?'#f03d37':'#999', fontSize: fonts}" v-for="(item,index) in list" @click="change(item)">{{item.name}}</li>
+        
+        </ul>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                list: [
+                    {name: "电影"},
+                    {name: "影院"},
+                    {name: "我的"}
+                ],
+                defaultActive: "电影",
+                classObj: {
+                    active: true,
+                    bg: false
+                },
+                activeClass: 'active',
+                bgClass: 'bg',
+                fonts: '30px'
+            },
+            methods: {
+                change(item){
+                    console.log(item);
+                    // this.defaultActive = item.name;
+                    this.activeClass = 'detive';
+                }
+            },
+        })
+    </script>
+</body>
+</html>

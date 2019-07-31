@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <my-child :my-list="mylist" :str="str" :msg="msg"></my-child>
+    </div>  
+
+    <template id="child">
+        <div>
+            <ul>
+                <li v-for="item in myList">
+                    {{item}}
+                </li>
+            </ul>
+            {{str}}
+            {{num}}
+            {{msg}}
+        </div>
+    </template>
+
+    <script>
+        var child = {
+            template: "#child",
+            props: {
+                "myList": Array,
+                "str": [Number, String, Object],    //允许是数字类型或字符串类型(多种数据类型用数组形式表示)
+                "info": {
+                    required: false      //该属性为true时必传(报错: Missing required prop: "info")
+                },
+                "num": {
+                    type: Number,
+                    default: 100        //默认值(当该属性接收到了来自父组件的值时,使用接收的值; 否则使用默认值)
+                },
+                "msg": {        //自定义验证函数(自带验证不满足需求时, 可自定义验证)
+                    validator: function(val){   //val指的是接收到的msg对应的数据(Invalid prop: custom validator check failed for prop "msg".)
+                        return val%2==0;
+                    }
+                }
+            }
+        }
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                mylist: ["html","css","javascript"],
+                str: {name: "小花"},
+                info: "你好",
+                num: 88,
+                msg: 199
+            },
+            components: {myChild: child}
+        })
+    </script>
+</body>
+</html>

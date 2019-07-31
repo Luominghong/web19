@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 2.页面容器 -->
+    <div id="app">
+       <p v-big v-color>我是p标签</p>
+       <input type="text" v-aa />
+       <div v-big>div</div>
+    </div>
+
+    <script>
+        // 全局指令(aa就是指令名, el对应指令所在的dom)
+        // Vue.directive("aa", {
+        //     inserted: function(el){
+        //         el.focus()
+        //     }
+        // })
+
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                
+            },
+            // 局部指令
+            directives: {
+                big: function(el){
+                    el.style.fontSize = "20px";
+                },
+                color: function(el){
+                    el.style.color = "red";
+                },
+                aa: {
+                    inserted: function(el){
+                        el.focus()
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

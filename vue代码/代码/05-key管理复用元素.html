@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入vue.js -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!--
+        key: 声明每个元素都是独立不可复用的, key是唯一的
+    -->
+    <!-- 2.页面容器 -->
+    <div id="app">
+        <p>
+            <template v-if="loginType">
+               <span>用户名</span>
+               <input type="text" name="" id="" placeholder="请输入用户名" key="username" >
+            </template>
+            <template v-else>
+               <span>邮箱</span>
+               <input type="email" name="" id="" placeholder="请输入邮箱" key="email" >
+            </template>
+            <button @click="loginType=!loginType">切换登录方式</button>
+        </p>
+    </div>
+
+    <script>
+        // 3.vue实例化(参数接收一个对象)
+        var vm = new Vue({
+            el: "#app",     //挂载的dom元素
+            data: {         //Vue实例里面的数据
+                loginType: true
+            }
+        })
+    </script>
+</body>
+</html>
