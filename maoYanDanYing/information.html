@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>jquery-解决跨域问题</title>
+		<script src="js/jquery-3.4.1.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$.ajax({
+					url:"http://192.168.1.252/data/getUserInfo.php",
+					async:true,
+					dataType:"jsonp",//数据的返回方式为jsonp
+					jsonp:"callback",//jsonp的跨域方式
+					success:function(data) {
+						console.log(data);
+						console.log(data[1].avatar);
+						var trs = '';
+						for (var i = 0; i < data.length; i++) {
+							console.log("aa");
+						trs+= `<tr><td>${data[i].avatar}</td>
+													<td>${data[i].nick_name}</td>
+													<td>${data[i].pass_word}</td>
+													<td>${data[i].phone}</td>
+													<td>${data[i].sex}</td>
+													<td>${data[i].user_id}</td>
+													<td>${data[i].user_name}</td>
+													</tr>`;
+							console.log("bbbb");
+						}
+						$("#tb").append(trs)
+					}
+				})
+			})
+		</script>
+		
+	</head>
+	<body>
+		<table border="1" id="tb">
+			<tr>
+			<th>avatar</th>
+			<th>nick_name</th>
+			<th>pass_word</th>
+			<th>phone</th>
+			<th>sex</th>
+			<th>user_id</th>
+			<th>user_name</th>
+			</tr>
+		</table>
+	</body>
+</html>

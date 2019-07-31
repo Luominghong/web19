@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>json-xml</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//将对象转字符串  JSON.stringify
+			var arr = [1,2,3];
+			var arrstr = JSON.stringify(arr);
+			console.log(arrstr);
+			console.log(typeof arrstr);
+			
+			var obj = {"name":"huaer"};
+			var objstr = JSON.stringify(obj);
+			console.log(objstr);
+			console.log(typeof objstr);
+			
+			//将字符串 转json对象
+			var mystr = 'aaaaa';//不是任何一个字符串都能赚json对象,
+			//JSON.parse 在将字符串转 json对象时,会检查格式,如果格式不正确会报错
+			//var myobj = JSON.parse(mystr);
+			var mystr1 = '{name:"dashan"}';
+			//var obj1 = JSON.parse(mystr1);
+			//console.log(obj1);
+			//console.log(typeof obj1);
+			var arr2 = '[1,2,3]';//数组的字符串也可以转json对象,key就是数组的下标
+			var obj2 = JSON.parse(arr2);
+			console.log(obj2);
+			
+			//如果遇到非严格模式json格式的字符串,想转json对象,怎么办？
+			//使用eval  :优势:k可以解析费严格模式的json,缺点:eval计算属性,使用时,会比较耗性能
+			
+			var obj3 = eval('('+mystr1+')');
+			console.log(obj3);
+			
+			
+			
+		</script>
+		xml数据：
+		<employees>
+			<employee>
+				<firstName>Bill</firstName>
+				<lastName>Gates</lastName>
+			</employee>
+			<employee>
+				<firstName>George</firstName>
+				<lastName>Bush</lastName>
+			</employee>
+			<employee>
+				<firstName>Thomas</firstName>
+				<lastName>Thomas</lastName>
+			</employee>
+		</employees>
+		json数据：
+		{
+			"employees": [
+				{
+					"firstName": "Bill", 
+					"lastName": "Gates"
+				}, 
+				{
+					"firstName": "George", 
+					"lastName": "Bush"
+				}, 
+				{
+					"firstName": "Thomas", 
+					"lastName": "Carter"
+				}
+			]
+		}
+		json和xml的区别：
+		1.json更小、更方便、执行和解析的速度更快
+		2.xml 描述更详尽、安全性更高
+		3.json 可以被所有的后台语言所支持， 原生js也支持
+	</body>
+</html>
