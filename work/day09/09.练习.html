@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			
+			#outer{
+				width: 500px;
+				margin: 50px auto;
+				padding: 10px;
+				background-color: greenyellow;
+				/*设置文本居中*/
+				text-align: center;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div id="outer">
+			
+			<p id="info"></p>
+			
+			<img src="img/1.jpg" alt="冰棍" />
+			
+			<button id="prev">上一张</button>
+			<button id="next">下一张</button>
+			
+		</div>
+
+		<script type="text/javascript">
+
+			// 初始化图片数组
+			var images = ["img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg", "img/5.jpg"];
+
+			// current 当前图片索引
+			var current = 0;
+
+			var info = document.getElementById("info");
+			info.innerText = "一共" + images.length + " 张图片，当前第" + (current + 1) + "张";
+
+			// 下一张
+			document.getElementById("next").onclick = function () {
+				current ++;
+
+				if (current > 4) {
+					current = 0;
+				}
+
+				// 获得 img 对象
+				var img = document.getElementsByTagName("img")[0];
+				// 设置 img 的 src 属性
+				img.src = images[current];
+
+				info.innerText = "一共" + images.length + " 张图片，当前第" + (current + 1) + "张";
+			}
+
+			// 上一张
+			document.getElementById("prev").onclick = function () {
+				current --;
+
+				if (current < 0) {
+					// 替换为最后一张的索引
+					current = 4;
+				}
+
+				// 获得 img 对象
+				var img = document.getElementsByTagName("img")[0];
+				// 设置 img 的 src 属性
+				img.src = images[current];
+
+
+				info.innerText = "一共" + images.length + " 张图片，当前第" + (current + 1) + "张";
+			}
+
+
+		</script>
+	</body>
+</html>

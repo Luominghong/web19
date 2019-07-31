@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        li{
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+        <ul id="box">
+            <li>haolouwo1</li>
+            <li>haolouwo2</li>
+            <li>haolouwo3</li>
+            <li>haolouwo4</li>
+            <li>haolouwo5</li>
+            <li>haolouwo6</li>
+        </ul>
+
+        <script>
+      /*   var d= document.getElementById("box").getElementsByTagName("li");
+               // console.log(d);
+                   for (var i=0;i<d.length;i++){
+                       //判断奇偶行
+                       if (i%2==0){
+                           d[i].style.backgroundColor="blue";
+                       }else {
+                           d[i].style.backgroundColor="aquamarine";
+                       }
+                       d[i].onclick=function (num) {
+                          return function () {
+                              return alert("第"+(num+1)+"行");
+                          }
+                       }(i)
+                       var last="";
+                       d[i].onmouseover=function () {
+                           last=this.style.backgroundColor;
+                           this.style.backgroundColor="green"
+                       }
+                       d[i].onmouseout=function () {
+                           this.style.backgroundColor=last;
+                       }
+               }*/
+      var ur1='http//aaa/txt.php?a=1&b=2&c=3'
+            function getUrlkey(ur1) {
+                var params={};
+                var urls=ur1.split("?");
+                var arr=urls[1].split("&");
+                for (var i=0;i=arr.length;i++){
+                    var a=arr[i].split("=");
+                    params[a[0]]=a[1];
+                }
+
+            }
+        </script>
+
+</body>
+</html>

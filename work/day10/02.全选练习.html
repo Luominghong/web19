@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>全选练习</title>
+</head>
+<body>
+
+	<form id="myForm" method="post" action="">
+		你爱好的运动是？<input type="checkbox" id="checkedAllBox" />全选/全不选
+		
+		<br />
+		<!-- value 的值在实际开发不要使用中文 -->
+		<input type="checkbox" name="items" value="足球"/>足球
+		<input type="checkbox" name="items" value="篮球" />篮球
+		<input type="checkbox" name="items" value="羽毛球" />羽毛球
+		<input type="checkbox" name="items" value="乒乓球" />乒乓球
+		<br />
+		<input type="button" id="checkedAllBtn" value="全　选" />
+		<input type="button" id="checkedNoBtn" value="全不选" />
+		<input type="button" id="checkedRevBtn" value="反　选" />
+		<input type="button" id="sendBtn" value="提　交" />
+	</form>
+
+	<script type="text/javascript">
+		function myClick(id, callback) {
+			document.getElementById(id).onclick = callback;
+		}
+
+		// 全选/全不选
+		myClick("checkedAllBox", function(){
+			// 获取 爱好的所有 checkbox 节点
+			var checkboxNodes = document.getElementsByName("items");
+			// 给每一个 checkbox 节点设置 checked 属性
+			for (var i = 0; i < checkboxNodes.length; i++) {
+				checkboxNodes[i].checked = this.checked;
+			}
+		});
+
+		// 全选
+		myClick("checkedAllBtn", function() {
+			// 获取 爱好的所有 checkbox 节点
+			var checkboxNodes = document.getElementsByName("items");
+			// 给每一个 checkbox 节点设置 checked 属性
+			for (var i = 0; i < checkboxNodes.length; i++) {
+				checkboxNodes[i].checked = true;
+			}
+
+			selectedALl(true);
+		});
+
+		// 全不选
+		myClick("checkedNoBtn", function() {
+			// 获取 爱好的所有 checkbox 节点
+			var checkboxNodes = document.getElementsByName("items");
+			// 给每一个 checkbox 节点设置 checked 属性
+			for (var i = 0; i < checkboxNodes.length; i++) {
+				checkboxNodes[i].checked = false;
+			}
+
+			selectedALl(false);
+		});
+
+		// 反选
+		myClick("checkedRevBtn", function() {
+			// 获取 爱好的所有 checkbox 节点
+			var checkboxNodes = document.getElementsByName("items");
+			// 给每一个 checkbox 节点设置 checked 属性
+			var count = 0;
+			for (var i = 0; i < checkboxNodes.length; i++) {
+				checkboxNodes[i].checked = !checkboxNodes[i].checked;
+
+				if(checkboxNodes[i].checked) {
+					count++;
+				}
+			}
+
+			if(count === checkboxNodes.length) {
+				selectedALl(true);
+			}else {
+				selectedALl(false);
+			}
+		});
+
+		//
+		function selectedALl(flag) {
+			document.getElementById("checkedAllBox").checked = flag;
+		}
+
+		// 状态联动
+		var items = document.getElementsByName("items");
+		// 循环给每个checkbox 添加 onclick 事件
+		for (var i = 0; i < items.length; i++) {
+			items[i].onclick = function() {
+
+				var count = 0;
+				for (var j = 0; j < items.length; j++) {
+					if (items[j].checked) {
+						count++;
+					}
+				}
+
+				//
+				if (count === items.length) {
+					selectedALl(true);
+				}else {
+					selectedALl(false);
+				}
+			}
+		}
+
+		// 提交
+		myClick("sendBtn", function() {
+			var items = document.getElementsByName("items");
+			var count = 0;
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].checked) {
+					console.log(items[i].value);
+					count ++;
+				}
+			}
+
+			if (count >= 2) {
+				alert("提交表单成功");
+			}else{
+				alert("请至少选择两项再进行表单提交")
+			}
+		})
+
+	</script>
+</body>
+</html>

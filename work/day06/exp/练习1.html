@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /**
+     * 实现对象的toString函数功能
+     * @param
+     *  obj 需要输出的对象
+     * @author XXX
+     * @version 1.0.0
+     * @Date XXX
+     */
+    function printObj(obj) {
+        var str = "";
+        // 遍历对象的所有属性
+        for (attr in obj) {
+            str += attr + ":";
+
+            // 判定当前属性是否是一个函数
+            if (obj[attr] instanceof Function) {
+                // 执行函数再拼接
+                str += obj[attr](a) + ","
+            }
+            // 当前属性不是函数
+            else {
+                // 获取属性值
+                str += obj[attr] + ","
+            }
+        }
+
+        // name:Tom,age:30,walk:行走,
+        // substr(0, length): 从0开始截取length个字符，返回一个新的字符串
+        return str.substr(0, str.length-1);
+    }
+
+    // 调用函数
+    var person = {
+        name: "Tom",
+        age: 30,
+        // addr: {
+        //     homeAddr: "家庭地址",
+        //     compyAddr: "公司地址"
+        // },
+        // interests: ["兴趣1","兴趣2"],
+        walk: function() {
+            return "行走";
+        }
+    }
+
+    console.log(printObj(person, "aa"));
+
+
+</script>
+</body>
+</html>

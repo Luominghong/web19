@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>添加删除记录练习</title>
+	<link rel="stylesheet" type="text/css" href="ex_2_style/css.css" />
+</head>
+<body>
+
+	<table>
+		<thead>
+		<tr>
+			<td colspan="5">
+				<button id="batchDel">批量删除</button>
+			</td>
+		</tr>
+		</thead>
+		<tbody id="employeeTable">
+		<tr>
+			<th>
+				<input type="checkbox" id="checkAll" />
+			</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Salary</th>
+			<th>&nbsp;</th>
+		</tr>
+		<tr>
+			<td><input type="checkbox" name="empsBox" /></td>
+			<td>Tom</td>
+			<td>tom@tom.com</td>
+			<td>5000</td>
+			<td><a href="javascript:;">Delete</a></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" name="empsBox" /></td>
+			<td>Jerry</td>
+			<td>jerry@sohu.com</td>
+			<td>8000</td>
+			<td><a href="deleteEmp?id=002">Delete</a></td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" name="empsBox" /></td>
+			<td>Bob</td>
+			<td>bob@tom.com</td>
+			<td>10000</td>
+			<td><a href="deleteEmp?id=003">Delete</a></td>
+		</tr>
+	</table>
+
+	<div id="formDiv">
+	
+		<h4>添加新员工</h4>
+
+		<table>
+			<tr>
+				<td class="word">name: </td>
+				<td class="inp">
+					<input type="text" name="empName" id="empName" />
+				</td>
+			</tr>
+			<tr>
+				<td class="word">email: </td>
+				<td class="inp">
+					<input type="text" name="email" id="email" />
+				</td>
+			</tr>
+			<tr>
+				<td class="word">salary: </td>
+				<td class="inp">
+					<input type="text" name="salary" id="salary" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<button id="addEmpButton" value="abc">
+						Submit
+					</button>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<script type="text/javascript">
+
+		// 批量删除
+		document.getElementById("batchDel").onclick = function() {
+			// 获取需要删除的 checkbox 的个数
+			var emps = document.getElementsByName("empsBox");
+
+			var delEmpBox = [];
+			var count = 0;
+			for (var i = 0; i < emps.length; i++) {
+				if (emps[i].checked) {
+					count++;
+					delEmpBox.push(emps[i])
+				}
+			}
+			if (count > 0) {
+				// 删除操作
+				if (confirm("确认要删除?")) {
+					for (var i = 0; i < delEmpBox.length; i++) {
+						var tr = delEmpBox[i].parentNode.parentNode;
+						tr.parentNode.removeChild(tr);
+					}
+				}
+
+			} else {
+				alert("请至少选择一项进行删除");
+			}
+		}
+
+		// 删除函数
+		function del(aNode) {
+			aNode.onclick = function(){
+				var trNode = aNode.parentNode.parentNode;
+				//获取tr的第一个td节点
+				var name = trNode.getElementsByTagName("td")[0].firstChild.nodeValue;
+				if (confirm("确然要删除"+name+"？")){
+					trNode.parentNode.removeChild(trNode);
+				}
+
+				// 禁止 a 的默认行为，不跳转
+				return false;
+			}
+		}
+
+		// a 删除功能
+		var aNodes = document.getElementsByTagName("a");
+		for (var i = 0; i < aNodes.length; i++) {
+			del(aNodes[i]);
+		}
+
+		// 添加功能
+		document.getElementById("addEmpButton").onclick = function () {
+			// 获取表单数据
+			var name = document.getElementById("empName").value;
+			var email = document.getElementById("email").value;
+			var salary = document.getElementById("salary").value;
+
+			// 1. DOM 原生方式
+			// 组装元素节点
+			// var nameTd = document.createElement("td");
+			// var nameText = document.createTextNode(name);
+			// nameTd.appendChild(nameText);
+			//
+			// var emailTd = document.createElement("td");
+			// var emailText = document.createTextNode(email);
+			// emailTd.appendChild(emailText);
+			//
+			// var salaryTd = document.createElement("td");
+			// var salaryText = document.createTextNode(salary);
+			// salaryTd.appendChild(salaryText);
+			//
+			// //<td><a href="javascript:;">Delete</a></td>
+			// var delTd = document.createElement("td");
+			//
+			// // 创建一个 a 标签
+			// var aNode = document.createElement("a");
+			// // 设置 a 标签属性
+			// aNode.setAttribute("href", "javascript:;");
+			// aNode.appendChild(document.createTextNode("Delete"))
+			// // 给 a 标签绑定事件
+			// del(aNode);
+			//
+			// delTd.appendChild(aNode);
+			//
+			// // 组建 tr
+			// var trNode = document.createElement("tr");
+			// trNode.appendChild(nameTd);
+			// trNode.appendChild(emailTd);
+			// trNode.appendChild(salaryTd);
+			// trNode.appendChild(delTd);
+			//
+			// // 将新创建的 tr 插入到 tbody 中
+			// document.getElementById("employeeTable").appendChild(trNode);
+
+
+			// 2. innerHTML 方式
+			document.getElementById("employeeTable").innerHTML += "<tr>" +
+					"<td><input type='checkbox' name='empsBox'> </td>" +
+					"<td>"+name+"</td>" +
+					"<td>"+email+"</td>" +
+					"<td>"+salary+"</td>" +
+					"<td><a href=\"deleteEmp?id=003\" onclick='return del2(this)'>Delete</a></td>" +
+					"</tr>";
+		}
+
+		//
+		function del2(aNode) {
+			var trNode = aNode.parentNode.parentNode;
+			//获取tr的第一个td节点
+			var name = trNode.getElementsByTagName("td")[0].firstChild.nodeValue;
+			if (confirm("确然要删除"+name+"？")){
+				trNode.parentNode.removeChild(trNode);
+			}
+
+			// 禁止 a 的默认行为，不跳转
+			return false;
+		}
+
+	</script>
+</body>
+</html>

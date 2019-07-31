@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        // 数组常用方法
+
+        var arr = [];
+
+        // push() 在数组末尾插入数据，返回新数组的长度
+        arr.push(10)
+        arr.push(null)
+        arr.push(undefined)
+
+        // unshift() 在数组的最前面插入，返回新数组的长度
+        arr.unshift(1);
+
+        // pop() 删除数组的末尾元素,并返回删除的元素
+        arr.pop()
+
+        // shift() 删除数组的第一个元素，,并返回删除的元素
+        arr.shift()
+
+        console.log(arr);
+
+        // slice(starIndex, endIndex) 截取数组中指定位置的元素，返回一个新的数组
+        arr = [10, 20, 30, "hello", {name:"Tom"}, true];
+        var result = arr.slice(4, 5);
+        console.log(result);
+
+        // splice() 添加/修改/删除, 返回删除的元素(数组)
+        // 两个参数 starIndex, count：删除
+        // 三个以上 starIndex, count, param...：修改和添加
+        arr = [10, 20, 30, "hello", {name:"Tom"}, true];
+
+        // 删除
+        result = arr.splice(4, 1);
+        console.log(result);
+
+        // 插入
+        arr.splice(4, 0, {name:"Tom"})
+        console.log(arr);
+
+        // 修改
+        arr.splice(4, 1, {name:"Jerry"})
+        console.log(arr);
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

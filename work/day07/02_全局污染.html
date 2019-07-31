@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        /**
+         * 减少全局污染方式
+         * 	- 在全局定义一个公共的命名空间
+         * 	    所有全局的资源都定义在公共的命名空间中
+         *
+         * 	- 闭包
+         */
+
+        // 全局命名空间
+        var myApp = {};
+        myApp.max = 100;
+
+        console.log(window);
+
+        // 闭包
+        // (function myApp() {
+        //     //公共资源
+        //     var max = 10;
+        //     return {
+        //         incerement: function() {
+        //             console.log(max);
+        //         },
+        //         getValue: function() {
+        //             return max;
+        //         }
+        //     }
+        // })();
+
+
+    </script>
+</body>
+</html>

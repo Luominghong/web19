@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+
+			/*
+			 * 宿主环境：一般宿主环境由外壳程序创建与维护，只要能提供js引擎执行的环境都可称之为外壳程序。
+			 * 如：web浏览器，一些桌面应用系统等。即由web浏览器或是这些桌面应用系统早就的环境即宿主环境。
+			 */
+			
+			/*
+			 * JS 对象分类
+			 * 1. 内建对象
+			 *  - ECMAScript-262 标准定义的对象。（本地对象）
+			 *  js中的内部对象包括Array、Boolean、Date、Function、Global、Math、Number、Object、RegExp、
+			 * 	String以及各种错误类对象，包括Error、EvalError、RangeError、ReferenceError、SyntaxError和
+			 * 	TypeError。
+			 *  其中 Global和 Math这两个对象又被称为"内置对象"，这两个对象在脚本程序初始化时被创建，
+			 *  不必实例化这两个对象。
+			 * 2. 宿主对象
+			 * 	- 由ECMAScript实现的宿主环境提供的对象，可以理解为：浏览器提供的对象。window，所有的BOM和DOM都是宿主对象。
+			 * 3. 自定义对象
+			 * 	- 开发人员自己定义的对象
+			 * 
+			 * 数组（Array）
+			 * 	- 数组也是一个对象
+			 * 	- 它和我们普通对象功能类似，也是用来存储一些值的
+			 * 	- 不同的是普通对象是使用字符串作为属性名的，
+			 * 		而数组时使用数字来作为索引操作元素
+			 * 	- 索引：
+			 * 		从0开始的整数就是索引
+			 * 	- 数组的存储性能比普通对象要好，在开发中我们经常使用数组来存储一些数据
+			 */
+			
+			//创建数组对象
+			var arr = new Array();
+
+			//使用typeof检查一个数组时，会返回object
+			console.log(typeof arr);
+			
+			/*
+			 * 向数组中添加元素
+			 * 语法：数组[索引] = 值
+			 */
+			arr[0] = 10;
+			arr[10] = 20;
+
+			
+			/*
+			 * 读取数组中的元素
+			 * 语法：数组[索引]
+			 * 	如果读取不存在的索引，他不会报错而是返回undefined
+			 */
+			console.log(arr[0]);
+			console.log(arr[1]);
+			console.log(arr[10]);
+
+
+			/*
+			 * 获取数组的长度
+			 * 可以使用length属性来获取数组的长度(元素的个数)
+			 * 	语法：数组.length
+			 * 
+			 * 对于连续的数组，使用length可以获取到数组的长度（元素的个数）
+			 * 对于非连续的数组，使用length会获取到数组的最大的索引+1
+			 * 		尽量不要创建非连续的数组
+			 */
+			console.log(arr.length);
+
+			/*
+			 * 修改length
+			 * 	如果修改的length大于原长度，则多出部分会空出来
+			 *  如果修改的length小于原长度，则多出的元素会被删除
+			 */
+			// arr.length = 12;
+
+			
+
+			
+			//向数组的最后一个位置添加元素
+			//语法：数组[数组.length] = 值;
+			arr[arr.length] = 30;
+			console.log(arr.length);
+
+
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

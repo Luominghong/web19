@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<p id="licen"></p>
+<input type="button" value="摇号" id="shakeBt">
+<script>
+    //1鼠标点击事件，
+    //2每点击一次触发随机产生一五位的数
+    //3首字母和后面四位分开随机生成
+    //4把字母封装成数组对其下表进行随机生成，再通过下表获取字母，
+    //5后面通过for循环4次随机生成4个数
+    //6通过字符串拼接生成车牌号，
+var chepai=["A","B","C","E","F","G","H","J"];
+var shuzi=[0,1,2,3,4,5,6,7,8,9];
+console.log(chepai);
+document.getElementById("shakeBt").onclick=function(){
+   var co=Math.round(Math.random() * 7);
+    console.log(chepai[co]);
+    var sum=co;
+    for (var i=0;i<4;i++){
+        console.log(shuzi[Math.round(Math.random() * shuzi.length - 1)]);
+    }
+   // console.log(sum);
+    var licen=document.getElementsByName("licen");
+}
+</script>
+</body>
+</html>

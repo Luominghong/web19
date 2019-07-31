@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+
+			// 数组去重：删除数组中重复的值
+			var arr = [10, 3, 5, 3, 6, 10, 5, 20, 5, 5];
+
+			// 每个数值进行一轮比较
+			// for (var i = 0; i < arr.length; i++) {
+			// 	for (var j = i + 1; j < arr.length; j++) {
+			// 		if (arr[i] == arr[j]) {
+			// 			arr.splice(i, 1);
+			// 			i--;
+			// 		}
+			// 	}
+			// }
+
+
+			// 使用对象，对象属性名不能重复的特性
+			// {10:10, 3:3}
+			// var obj = {};
+			// for (var i = 0; i < arr.length; i++) {
+			// 	var item = arr[i];
+			//
+			// 	if (typeof obj[item] !== "undefined") {
+			// 		// 删除数组元素
+			// 		arr.splice(i, 1);
+			// 		// 数组长度发生了变化 -1， 所以需要从上一个位置进行检索
+			// 		i--;
+			// 	} else {
+			// 		// 对象属性赋值
+			// 		// {10: 10, 3: 3, 5: 5, 6: 6}
+			// 		obj[item] = item;
+			// 	}
+			// }
+			// obj = null;
+
+
+			// 在 Array 对象原型上扩展了一个 去重的方法 uq
+			Array.prototype.uq = function() {
+				var obj = {};
+				for (var i = 0; i < this.length; i++) {
+					var item = this[i];
+
+					if (typeof obj[item] !== "undefined") {
+						// 删除数组元素
+						this.splice(i, 1);
+						// 数组长度发生了变化 -1， 所以需要从上一个位置进行检索
+						i--;
+					} else {
+						// 对象属性赋值
+						// {10: 10, 3: 3, 5: 5, 6: 6}
+						obj[item] = item;
+					}
+				}
+				// 清空对象，释放内存
+				obj = null;
+
+				return this;
+			}
+
+			var result = arr.uq();
+			console.log(result);
+
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

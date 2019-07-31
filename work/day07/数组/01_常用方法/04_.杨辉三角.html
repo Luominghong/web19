@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        span {
+            display: inline-block;;
+            width: 80px;
+            height: 30px;
+        }
+    </style>
+    <script>
+        // 行数
+        var rows = +prompt("请输入杨辉三角行数：")
+
+        // 杨辉三角数组
+        var yh = [];
+
+        // 外层循环控制行数
+        for (var i = 0; i < rows; i++) {
+            // 每行的数据也是一个数组
+            var rowArr = new Array(i + 1);
+            for (var j = 0; j < rowArr.length; j++) {
+                // 第一行
+                if (i == 0) {
+                    rowArr[0] = 1;
+                }
+                // 第二行
+                else if (i == 1) {
+                    // 第一列
+                    rowArr[0] = 1;
+                    // 末尾列
+                    rowArr[1] = 1;
+                }
+                // 第三行开始
+                else {
+                    // 第一列
+                    rowArr[0] = 1;
+                    // 除了第一列和末尾列
+                    for (var n = 1; n < i; n++) {
+                        // yh[][] 第一个[] 表示行索引，第二个[] 表示列索引
+                        rowArr[n] = yh[i-1][n-1] + yh[i-1][n];
+                    }
+                    // 末尾列
+                    rowArr[i] = 1;
+                }
+
+            }
+            // 把每行的数据插入到 yh 数组中
+            yh.push(rowArr)
+        }
+
+        // console.log(yh);
+
+        // 页面输出
+        for (var i = 0; i < yh.length; i++) {
+            for(var j = 0; j < yh[i].length; j++) {
+                document.write("<span>"+yh[i][j]+"</span>")
+            }
+            document.write("<br>")
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

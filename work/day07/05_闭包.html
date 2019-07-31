@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        /*
+         * 闭包是指有权访问另一个函数作用域中的变量的函数。
+         * 创建闭包的常见方式，就是在一个函数内部创建另一个函数
+         *
+         * 闭包只能取得包含函数中任何变量的最后一个值
+         *
+         * 使用场景：
+         *   - 减少全局污染
+         *   - 延长外部函数的生命周期
+         */
+
+        // 闭包
+        function f() {
+            var arr = new Array();
+
+            for(var i = 0; i < 10; i++) {
+
+                // arr[i] = function(){
+                //     return i;
+                // }
+
+                // 创建了 10 个函数作用域
+                arr[i] = function(num){
+
+                    // 每个内部函数都 引用 一个对应的 外部函数
+                    return function(){
+                        // num 需要引用 外部函数的 num 变量
+                        return num;
+                    }
+                }(i)
+            }
+
+            return arr;
+        }
+
+        // 函数执行环境销毁
+        // 函数对象（活动对象）没销毁，变量 i=10 被 内部函数 引用
+        var result = f();
+        console.log(result);
+
+        // 调用内部函数， 内部函数需要访问外部函数的 i
+        console.log(result[0]()); //0
+        console.log(result[5]()); //5
+        console.log(result[9]()); //9
+    </script>
+</head>
+<body>
+
+</body>
+</html>
